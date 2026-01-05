@@ -1,13 +1,19 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
+use App\Http\Controllers\Api\{UserController, AuthController, TransactionController};
 
 Route::get('/health', function () {
-    return response()->json(['hello world' => true]);
+    return response()->json(['up' => true]);
+});
+
+Route::post('/users', [UserController::class, 'store']);
+
+Route::post('/auth/login', [AuthController::class, 'login']);
+
+Route::post('/auth/logout', [AuthController::class, 'logout'])
+    ->middleware('auth:sanctum');
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/transactions', [TransactionController::class, 'store']);
 });
