@@ -7,6 +7,81 @@ O objetivo principal foi desenvolver uma **API REST sólida**, utilizando de for
 
 ---
 
+## Instruções de Instalação
+
+### 1. Clonar o repositório
+
+```bash
+git clone https://github.com/masson-felipe/laravel-rest-api
+```
+
+### 2. Criar o arquivo `.env` na raiz do projeto
+
+Na raiz do projeto, crie o arquivo `.env` a partir do exemplo:
+
+```bash
+cp .env.example .env
+```
+
+Em seguida, preencha as variáveis de ambiente relacionadas à conexão com o banco de dados **MySQL**, conforme sua configuração local.
+
+### 3. Subir o ambiente com Docker
+
+Ainda na raiz do projeto, execute:
+
+```bash
+docker compose up --build
+```
+> **Nota sobre o build do container**
+>
+> Durante o build do container, pode ocorrer um erro indicando que o arquivo `/entrypoint.sh` não foi encontrado.  
+> Isso geralmente acontece devido à formatação incorreta do arquivo.
+>
+> Certifique-se de que o `entrypoint.sh` esteja no formato **LF (Unix)** e não **CRLF (Windows)**.
+
+
+Esse comando irá construir as imagens e iniciar o ambiente de desenvolvimento local.
+
+### 4. Configurar o `.env` da aplicação Laravel
+
+No arquivo `.env` localizado em `/laravel-api`, ajuste as variáveis de conexão com o banco de dados para que apontem para o container do MySQL:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=db
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=laravel
+DB_PASSWORD=laravel
+```
+
+### 5. Executar as migrations
+
+Com os containers em execução, rode o comando abaixo para criar as tabelas no banco de dados:
+
+```bash
+docker exec -it laravel_app php artisan migrate
+```
+
+### 6. Executar os testes automatizados
+
+Para rodar os testes da aplicação:
+
+```bash
+docker exec -it laravel_app php artisan test
+```
+
+### 7. Testar os endpoints da API
+
+Os endpoints podem ser testados utilizando o **Postman**.
+Basta importar a coleção disponível em:
+
+```
+docs/Laravel-Rest API.postman_collection.json
+```
+
+---
+
 ## Visão Geral
 
 A API expõe **quatro rotas principais**, cobrindo os fluxos essenciais do desafio.  
